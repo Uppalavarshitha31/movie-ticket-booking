@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Film, Code, BookOpen, Sparkles, Terminal, Download, ShieldCheck } from "lucide-react";
+import { Film, Code, BookOpen, Sparkles, Terminal, ShieldCheck } from "lucide-react";
 import { javaProjectFiles } from "./java_project_data";
 import { JavaFile } from "./types";
 import LiveSimulator from "./components/LiveSimulator";
@@ -20,34 +20,6 @@ export default function App() {
     );
   };
 
-  // Trigger Dynamic ZIP build
-  const handleBulkZipDownload = async () => {
-    try {
-      const response = await fetch("/api/download-project", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ files: editableFiles })
-      });
-
-      if (!response.ok) {
-        throw new Error("Dynamic compilation failed on Express backend.");
-      }
-
-      const blob = await response.blob();
-      const url = window.URL.createObjectURL(blob);
-      const link = document.createElement("a");
-      link.href = url;
-      link.setAttribute("download", "java_movie_booking_system.zip");
-      document.body.appendChild(link);
-      link.click();
-      link.remove();
-      window.URL.revokeObjectURL(url);
-    } catch (err) {
-      console.error(err);
-      alert("Error: Could not pack file system zip.");
-    }
-  };
-
   return (
     <div id="app-root-wrapper" className="min-h-screen bg-slate-950 text-slate-100 flex flex-col justify-between font-sans">
       
@@ -64,12 +36,6 @@ export default function App() {
           </div>
 
           <div className="flex items-center justify-center gap-2">
-            <button
-              onClick={handleBulkZipDownload}
-              className="bg-indigo-600 hover:bg-indigo-500 text-xs font-bold text-white py-2.5 px-4 rounded-xl flex items-center gap-1.5 transition duration-200 cursor-pointer shadow-lg shadow-indigo-500/20"
-            >
-              <Download className="w-3.5 h-3.5" /> Download Project ZIP
-            </button>
             <div className="flex items-center gap-1 bg-slate-900 border border-slate-800 px-3 py-2 rounded-xl text-[10px] text-slate-400 font-mono leading-none">
               <ShieldCheck className="w-3.5 h-3.5 text-indigo-400" />
               <span>Full Code Output</span>

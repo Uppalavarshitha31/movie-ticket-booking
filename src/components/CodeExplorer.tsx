@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Folder, File, Code, Copy, Check, Download, Edit2, CheckSquare, X, Info } from "lucide-react";
+import { Folder, File, Code, Copy, Check, Edit2, CheckSquare, X, Info } from "lucide-react";
 import { JavaFile } from "../types";
 
 interface CodeExplorerProps {
@@ -12,7 +12,6 @@ export default function CodeExplorer({ files, onUpdateFile }: CodeExplorerProps)
   const [copied, setCopied] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const [editBuffer, setEditBuffer] = useState("");
-  const [downloadingZip, setDownloadingZip] = useState(false);
 
   // Active file object
   const activeFile = files.find(f => f.path === activeFilePath) || files[0];
@@ -31,36 +30,6 @@ export default function CodeExplorer({ files, onUpdateFile }: CodeExplorerProps)
   const handleSaveEdit = () => {
     onUpdateFile(activeFile.path, editBuffer);
     setIsEditing(false);
-  };
-
-  const handleDownloadZip = async () => {
-    setDownloadingZip(true);
-    try {
-      const response = await fetch("/api/download-project", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ files })
-      });
-
-      if (!response.ok) {
-        throw new Error("Failed to compile project files ZIP on-the-fly.");
-      }
-
-      const blob = await response.blob();
-      const url = window.URL.createObjectURL(blob);
-      const link = document.createElement("a");
-      link.href = url;
-      link.setAttribute("download", "java_movie_booking_system.zip");
-      document.body.appendChild(link);
-      link.click();
-      link.remove();
-      window.URL.revokeObjectURL(url);
-    } catch (err) {
-      console.error(err);
-      alert("Failed to download project ZIP: " + (err as Error).message);
-    } finally {
-      setDownloadingZip(false);
-    }
   };
 
   // Nesting categorizer for project tree
@@ -111,7 +80,7 @@ export default function CodeExplorer({ files, onUpdateFile }: CodeExplorerProps)
     <div id="code-explorer-container" className="grid grid-cols-1 lg:grid-cols-4 gap-6 max-w-6xl mx-auto py-4 h-[650px]">
       
       {/* Directory File Tree Column */}
-      <div className="lg:col-span-1 bg-slate-900 border border-slate-800 rounded-2xl p-4 flex flex-col justify-between overflow-y-auto shadow-xl">
+      <div className="lg:col-span-1 bg-slate-900 border border-slate-800 rounded-2xl p-4 flex flex-col overflow-y-auto shadow-xl">
         <div className="space-y-4">
           <div className="flex items-center justify-between border-b border-slate-800 pb-3">
             <h3 className="text-sm font-bold text-white uppercase tracking-wider flex items-center gap-2">
@@ -155,25 +124,6 @@ export default function CodeExplorer({ files, onUpdateFile }: CodeExplorerProps)
             ))}
           </div>
         </div>
-
-        {/* Dynamic ZIP packing button */}
-        <button
-          onClick={handleDownloadZip}
-          disabled={downloadingZip}
-          className="w-full mt-4 bg-indigo-600 hover:bg-indigo-500 disabled:bg-indigo-600/30 text-white font-bold py-3 px-4 rounded-xl flex items-center justify-center gap-2 transition duration-200 cursor-pointer disabled:cursor-not-allowed shadow-lg shadow-indigo-500/20"
-        >
-          {downloadingZip ? (
-            <>
-              <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
-              <span>Packaging ZIP...</span>
-            </>
-          ) : (
-            <>
-              <Download className="w-4 h-4" />
-              <span>Download Project ZIP</span>
-            </>
-          )}
-        </button>
       </div>
 
       {/* Editor Screen View Area Column */}
