@@ -1,0 +1,6 @@
+{
+  "name": "Java Movie Booking System Hub",
+  "description": "An interactive environment featuring a live ticket booking simulator, an elegant Java Servlet/JSP code explorer, a MySQL database script, dynamic project ZIP exporter, and an AI assistant.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
