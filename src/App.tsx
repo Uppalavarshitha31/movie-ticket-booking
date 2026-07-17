@@ -1,143 +1,22 @@
-import React, { useState } from "react";
-import { Film, Code, BookOpen, Sparkles, Terminal, ShieldCheck } from "lucide-react";
-import { javaProjectFiles } from "./java_project_data";
-import { JavaFile } from "./types";
+import React from "react";
 import LiveSimulator from "./components/LiveSimulator";
-import CodeExplorer from "./components/CodeExplorer";
-import SetupGuide from "./components/SetupGuide";
-import AIAssistant from "./components/AIAssistant";
-
-type TabType = "simulator" | "code" | "guide" | "assistant";
 
 export default function App() {
-  const [activeTab, setActiveTab] = useState<TabType>("simulator");
-  const [editableFiles, setEditableFiles] = useState<JavaFile[]>(javaProjectFiles);
-
-  // Callback to persist file updates inside memory state
-  const handleUpdateFile = (path: string, newContent: string) => {
-    setEditableFiles(prev =>
-      prev.map(file => (file.path === path ? { ...file, content: newContent } : file))
-    );
-  };
-
   return (
     <div id="app-root-wrapper" className="min-h-screen bg-slate-950 text-slate-100 flex flex-col justify-between font-sans">
-      
-      {/* Top Banner Branding Header */}
-      <header className="border-b border-slate-900 bg-slate-950/80 backdrop-blur-md sticky top-0 z-50">
-        <div className="max-w-7xl mx-auto px-6 py-4 flex flex-col md:flex-row md:items-center justify-between gap-4">
-          <div className="space-y-1">
-            <h1 className="text-2xl font-black text-white tracking-tight flex items-center gap-2 justify-center md:justify-start">
-              <span className="text-indigo-500">☕</span> Java Movie Booking Workspace
-            </h1>
-            <p className="text-xs text-slate-400">
-              Complete dynamic MVC Java Servlets, JSPs, JDBC, and MySQL project hub & sandbox simulator.
-            </p>
-          </div>
-
-          <div className="flex items-center justify-center gap-2">
-            <div className="flex items-center gap-1 bg-slate-900 border border-slate-800 px-3 py-2 rounded-xl text-[10px] text-slate-400 font-mono leading-none">
-              <ShieldCheck className="w-3.5 h-3.5 text-indigo-400" />
-              <span>Full Code Output</span>
-            </div>
-          </div>
-        </div>
-      </header>
-
-      {/* Main Tab Controller Bar */}
-      <div className="bg-slate-950 border-b border-slate-900/50 sticky top-[73px] z-40">
-        <div className="max-w-7xl mx-auto px-6 py-2">
-          <div className="flex items-center gap-2 overflow-x-auto no-scrollbar py-1">
-            
-            <button
-              onClick={() => setActiveTab("simulator")}
-              className={`px-4 py-2.5 rounded-xl text-xs font-bold transition flex items-center gap-2 cursor-pointer ${
-                activeTab === "simulator"
-                  ? "bg-slate-900 text-white border border-slate-800 shadow-md"
-                  : "text-slate-400 hover:text-white"
-              }`}
-            >
-              <Film className="w-4 h-4 text-indigo-500" />
-              <span>🎬 Live Simulator</span>
-            </button>
-
-            <button
-              onClick={() => setActiveTab("code")}
-              className={`px-4 py-2.5 rounded-xl text-xs font-bold transition flex items-center gap-2 cursor-pointer ${
-                activeTab === "code"
-                  ? "bg-slate-900 text-white border border-slate-800 shadow-md"
-                  : "text-slate-400 hover:text-white"
-              }`}
-            >
-              <Code className="w-4 h-4 text-sky-400" />
-              <span>📂 Java Source Files</span>
-            </button>
-
-            <button
-              onClick={() => setActiveTab("guide")}
-              className={`px-4 py-2.5 rounded-xl text-xs font-bold transition flex items-center gap-2 cursor-pointer ${
-                activeTab === "guide"
-                  ? "bg-slate-900 text-white border border-slate-800 shadow-md"
-                  : "text-slate-400 hover:text-white"
-              }`}
-            >
-              <BookOpen className="w-4 h-4 text-emerald-400" />
-              <span>📖 Local Setup Guide</span>
-            </button>
-
-            <button
-              onClick={() => setActiveTab("assistant")}
-              className={`px-4 py-2.5 rounded-xl text-xs font-bold transition flex items-center gap-2 cursor-pointer ${
-                activeTab === "assistant"
-                  ? "bg-slate-900 text-white border border-slate-800 shadow-md"
-                  : "text-slate-400 hover:text-white"
-              }`}
-            >
-              <Sparkles className="w-4 h-4 text-amber-400 animate-pulse" />
-              <span>💬 AI Coding Copilot</span>
-            </button>
-
-          </div>
-        </div>
-      </div>
-
-      {/* Main Tab Routing Area Content */}
       <main className="max-w-7xl mx-auto w-full px-6 py-8 flex-grow">
-        {activeTab === "simulator" && (
-          <div className="animate-fade-in">
-            <LiveSimulator />
-          </div>
-        )}
-        
-        {activeTab === "code" && (
-          <div className="animate-fade-in">
-            <CodeExplorer files={editableFiles} onUpdateFile={handleUpdateFile} />
-          </div>
-        )}
-
-        {activeTab === "guide" && (
-          <div className="animate-fade-in">
-            <SetupGuide />
-          </div>
-        )}
-
-        {activeTab === "assistant" && (
-          <div className="animate-fade-in">
-            <AIAssistant />
-          </div>
-        )}
+        <LiveSimulator />
       </main>
 
       {/* Page Footer */}
       <footer className="border-t border-slate-900 bg-slate-950 py-8 px-6 text-center text-xs text-slate-500">
         <div className="max-w-7xl mx-auto space-y-2">
-          <p>🎬 Java Movie Ticket Booking System - Workspace & Sandbox Simulator.</p>
+          <p>© {new Date().getFullYear()} Grand Cinema Hall. All rights reserved.</p>
           <p className="text-[10px] text-slate-600">
-            Powered by Java MVC, JSP 4.0, JDBC standard API, and MySQL server specifications.
+            Dynamic Movie Booking System — Java Servlet MVC Architecture & JSP Technology.
           </p>
         </div>
       </footer>
-
     </div>
   );
 }
